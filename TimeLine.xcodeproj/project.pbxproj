@@ -17,6 +17,8 @@
 		3BD77F99215AE29F00FC686E /* AddPostTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD77F98215AE29F00FC686E /* AddPostTableViewController.swift */; };
 		3BD77F9B215AE45E00FC686E /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD77F9A215AE45E00FC686E /* Post.swift */; };
 		3BD77F9D215AE8DA00FC686E /* PostController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD77F9C215AE8DA00FC686E /* PostController.swift */; };
+		3BD77F9F215AF93B00FC686E /* PostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD77F9E215AF93B00FC686E /* PostTableViewCell.swift */; };
+		3BD77FA1215AF97300FC686E /* DateFormater.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD77FA0215AF97300FC686E /* DateFormater.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,6 +35,8 @@
 		3BD77F98215AE29F00FC686E /* AddPostTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPostTableViewController.swift; sourceTree = "<group>"; };
 		3BD77F9A215AE45E00FC686E /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		3BD77F9C215AE8DA00FC686E /* PostController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostController.swift; sourceTree = "<group>"; };
+		3BD77F9E215AF93B00FC686E /* PostTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostTableViewCell.swift; sourceTree = "<group>"; };
+		3BD77FA0215AF97300FC686E /* DateFormater.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormater.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -119,6 +123,7 @@
 		3BD77F90215ADE0400FC686E /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				3BD77F9E215AF93B00FC686E /* PostTableViewCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -134,6 +139,7 @@
 		3BD77F92215ADE1200FC686E /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				3BD77FA0215AF97300FC686E /* DateFormater.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -228,8 +234,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3BD77F9F215AF93B00FC686E /* PostTableViewCell.swift in Sources */,
 				3BD77F78215ADD9700FC686E /* AppDelegate.swift in Sources */,
 				3BD77F95215AE0F200FC686E /* PostListTableViewController.swift in Sources */,
+				3BD77FA1215AF97300FC686E /* DateFormater.swift in Sources */,
 				3BD77F99215AE29F00FC686E /* AddPostTableViewController.swift in Sources */,
 				3BD77F97215AE10900FC686E /* PostDetailTableViewController.swift in Sources */,
 				3BD77F9B215AE45E00FC686E /* Post.swift in Sources */,
