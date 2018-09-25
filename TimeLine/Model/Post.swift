@@ -14,7 +14,8 @@ class Post {
     
     var photoData: Data?
     let timestamp: Date
-    let comments: [Comment]
+    let caption: String
+    let comments: [Comment] = []
     
     var photo : UIImage? {
         get {
@@ -28,10 +29,11 @@ class Post {
     }
     
     
-    init(photoData: Data?, timestamp: Date = Date(), comments: [Comment]){
+    init(photoData: Data?, timestamp: Date = Date(), caption: String, photo: UIImage?){
         self.photoData = photoData
         self.timestamp = timestamp
-        self.comments = comments
+        self.caption = caption
+        self.photo = photo
     }
     
 }

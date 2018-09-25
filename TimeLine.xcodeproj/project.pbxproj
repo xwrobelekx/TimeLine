@@ -16,6 +16,7 @@
 		3BD77F97215AE10900FC686E /* PostDetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD77F96215AE10900FC686E /* PostDetailTableViewController.swift */; };
 		3BD77F99215AE29F00FC686E /* AddPostTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD77F98215AE29F00FC686E /* AddPostTableViewController.swift */; };
 		3BD77F9B215AE45E00FC686E /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD77F9A215AE45E00FC686E /* Post.swift */; };
+		3BD77F9D215AE8DA00FC686E /* PostController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD77F9C215AE8DA00FC686E /* PostController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +32,7 @@
 		3BD77F96215AE10900FC686E /* PostDetailTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailTableViewController.swift; sourceTree = "<group>"; };
 		3BD77F98215AE29F00FC686E /* AddPostTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPostTableViewController.swift; sourceTree = "<group>"; };
 		3BD77F9A215AE45E00FC686E /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
+		3BD77F9C215AE8DA00FC686E /* PostController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -139,6 +141,7 @@
 		3BD77F93215ADE1C00FC686E /* ModelController */ = {
 			isa = PBXGroup;
 			children = (
+				3BD77F9C215AE8DA00FC686E /* PostController.swift */,
 			);
 			path = ModelController;
 			sourceTree = "<group>";
@@ -230,6 +233,7 @@
 				3BD77F99215AE29F00FC686E /* AddPostTableViewController.swift in Sources */,
 				3BD77F97215AE10900FC686E /* PostDetailTableViewController.swift in Sources */,
 				3BD77F9B215AE45E00FC686E /* Post.swift in Sources */,
+				3BD77F9D215AE8DA00FC686E /* PostController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
