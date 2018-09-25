@@ -12,6 +12,9 @@
 		3BD77F7F215ADD9800FC686E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3BD77F7E215ADD9800FC686E /* Assets.xcassets */; };
 		3BD77F82215ADD9800FC686E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3BD77F80215ADD9800FC686E /* LaunchScreen.storyboard */; };
 		3BD77F8C215ADDA100FC686E /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BD77F8B215ADDA100FC686E /* CloudKit.framework */; };
+		3BD77F95215AE0F200FC686E /* PostListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD77F94215AE0F200FC686E /* PostListTableViewController.swift */; };
+		3BD77F97215AE10900FC686E /* PostDetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD77F96215AE10900FC686E /* PostDetailTableViewController.swift */; };
+		3BD77F99215AE29F00FC686E /* AddPostTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD77F98215AE29F00FC686E /* AddPostTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -23,6 +26,9 @@
 		3BD77F83215ADD9800FC686E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3BD77F89215ADD9F00FC686E /* TimeLine.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TimeLine.entitlements; sourceTree = "<group>"; };
 		3BD77F8B215ADDA100FC686E /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
+		3BD77F94215AE0F200FC686E /* PostListTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostListTableViewController.swift; sourceTree = "<group>"; };
+		3BD77F96215AE10900FC686E /* PostDetailTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailTableViewController.swift; sourceTree = "<group>"; };
+		3BD77F98215AE29F00FC686E /* AddPostTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPostTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +105,9 @@
 		3BD77F8F215ADDF000FC686E /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				3BD77F94215AE0F200FC686E /* PostListTableViewController.swift */,
+				3BD77F96215AE10900FC686E /* PostDetailTableViewController.swift */,
+				3BD77F98215AE29F00FC686E /* AddPostTableViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -214,6 +223,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				3BD77F78215ADD9700FC686E /* AppDelegate.swift in Sources */,
+				3BD77F95215AE0F200FC686E /* PostListTableViewController.swift in Sources */,
+				3BD77F99215AE29F00FC686E /* AddPostTableViewController.swift in Sources */,
+				3BD77F97215AE10900FC686E /* PostDetailTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
