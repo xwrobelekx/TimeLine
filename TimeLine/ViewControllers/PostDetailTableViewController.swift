@@ -60,6 +60,8 @@ class PostDetailTableViewController: UITableViewController {
         //FIXME: relod the table view if needed
     }
     
+    
+    
     func addComentAlert() {
         let alert = UIAlertController(title: "Add Comment:", message: nil, preferredStyle: .alert)
         alert.addTextField { (commentTextField) in

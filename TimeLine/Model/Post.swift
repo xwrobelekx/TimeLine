@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 
-class Post {
+class Post: SearchableRecord {
     
     var photoData: Data?
     let timestamp: Date
@@ -36,14 +36,19 @@ class Post {
         self.photo = photo
     }
     
+    func matches(searchTerm: String) -> Bool {
+        return caption.lowercased().contains(searchTerm.lowercased())
+    }
+    
 }
 
 
 
 
 
-class Comment {
+class Comment: SearchableRecord {
     
+    //FIXME: what is the text property for?
     let comment: String
     let text: String
     let timestamp: Date
@@ -55,4 +60,10 @@ class Comment {
         self.text = text
         self.timestamp = timestamp
     }
+    
+    func matches(searchTerm: String) -> Bool{
+        return comment.lowercased().contains(searchTerm.lowercased()) //may need to add text to be searchable
+
+    }
+    
 }

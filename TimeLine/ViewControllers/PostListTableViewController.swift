@@ -8,47 +8,84 @@
 
 import UIKit
 
-class PostListTableViewController: UITableViewController {
+class PostListTableViewController: UITableViewController, UISearchBarDelegate {
+    
     
     //MARK: - Properties
-    
-    
+    var resultsArray: [Post] = []
+    var isSearching : Bool = false
     
     
     //MARK: - Outlets
-    
+    @IBOutlet weak var postSearchBar: UISearchBar!
     
     
     
     //MARK: - LifeCycle Methods
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        postSearchBar.delegate = self
 
     }
     
-    override func viewDidAppear(_ animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         tableView.reloadData()
+        
+        //FIXME: Part 2 -> 5 - In ViewWillAppear set the results array equal to the PostController.shared.posts - not sure why i would do that?
+    }
+    
+    //MARK: - SearchBarDelegate Method
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        guard searchText != "" else {return}
+        isSearching = true
+        let posts = PostController.shared.posts
+        let filteredPosts = posts.filter{$0.matches(searchTerm: searchText)}
+        let results = filteredPosts.map{ $0 as Post}
+        resultsArray = results
+        //FIXME: - not sure if this will search thru comments
+        tableView.reloadData()
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        isSearching = false
+        searchBar.text = ""
+        tableView.reloadData()
+        searchBar.resignFirstResponder()
+    }
+    
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        isSearching = true
+    }
+    
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        isSearching = false
     }
 
-    
-    
     
     
     // MARK: - Table view data source
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return PostController.shared.posts.count
+        if isSearching {
+            return resultsArray.count
+        } else {
+            return PostController.shared.posts.count
+        }
     }
-
-   
+    
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "postCell", for: indexPath) as? PostTableViewCell else {return UITableViewCell()}
-        let post = PostController.shared.posts[indexPath.row]
-        cell.post = post
+        if isSearching {
+            let post  = resultsArray[indexPath.row] as? Post
+            cell.post = post
+        } else {
+            let post = PostController.shared.posts[indexPath.row]
+            cell.post = post
+        }
         return cell
     }
-   
+    
 
     /*
     // Override to support conditional editing of the table view.
@@ -102,4 +139,17 @@ class PostListTableViewController: UITableViewController {
     }
     
     
+}
+
+
+
+
+
+
+extension PostListTableViewController: SearchableRecord {
+    func matches(searchTerm: String) -> Bool {
+        
+        //FIXME: - not sure what to implement here
+        return true
+    }
 }

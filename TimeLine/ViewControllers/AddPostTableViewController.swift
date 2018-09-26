@@ -6,48 +6,62 @@
 //  Copyright © 2018 Kamil Wrobel. All rights reserved.
 //
 
+
+//MARK: - Notes:
+/*
+ -part 2 under imagePicker Controller - note: Be Sure to add NSCameraUsageDescription - ot sure what that is
+ 
+ 
+ */
+
+
+
+
 import UIKit
 
-class AddPostTableViewController: UITableViewController {
+
+class AddPostTableViewController: UITableViewController, ImagePickerCustomDelegate  {
+    
+    
+    
+    //MARK: - Properties
+    var image : UIImage? = nil
     
     
     //MARK: - Outlets
-    @IBOutlet weak var selectedImageView: UIImageView!
     @IBOutlet weak var addCaptionTextField: UITextField!
-    @IBOutlet weak var selectImageButtonOutlet: UIButton!
-    //this is neede to hide button title when image is selected
     
     
     //MARK: - Lifecycle Methods
     override func viewDidLoad() {
         super.viewDidLoad()
-        
     }
     
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        selectImageButtonOutlet.setTitle("Select Image", for: .normal)
+    
+    //MARK: - Navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "toPhotoSelector"{
+            let destinationVC = segue.destination as? PhotoSelectorViewController
+            destinationVC?.delegate = self
+        }
     }
-
-
-
+    
+    
+    //MARK: - Protocol Method
+    func newImageWasAssifned(image: UIImage) {
+        self.image = image
+    }
+    
     
     //MARK: - Actions
-    @IBAction func selectImageButtonTapped(_ sender: Any) {
-        
-        selectImageButtonOutlet.setTitle("", for: .normal)
-    }
-    
-    
     @IBAction func addPostButtonTapped(_ sender: Any) {
-    guard let image = selectedImageView.image,
-        let caption = addCaptionTextField.text,
-        caption != "" else {return}
+        guard let image = image,
+            let caption = addCaptionTextField.text,
+            caption != "" else {return}
         
         PostController.shared.createPostWith(image: image, caption: caption) { (post) in
             //FIXME: need to do something here for completion
         }
-        
         addCaptionTextField.text = ""
         //FIXME: - would be nice to animate this
         self.tabBarController?.selectedIndex = 0
@@ -55,10 +69,11 @@ class AddPostTableViewController: UITableViewController {
     
     
     @IBAction func cancelButtonTapped(_ sender: Any) {
-        
-         self.tabBarController?.selectedIndex = 0
-        
+        addCaptionTextField.text = ""
+        self.tabBarController?.selectedIndex = 0
     }
     
-
 }
+
+
+
