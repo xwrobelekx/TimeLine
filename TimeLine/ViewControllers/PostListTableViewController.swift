@@ -26,6 +26,11 @@ class PostListTableViewController: UITableViewController {
 
 
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tableView.reloadData()
+    }
 
     
     

@@ -11,9 +11,13 @@ import UIKit
 class PostDetailTableViewController: UITableViewController {
     
     //MARK: - Properties
+    
+    
+    
     var post : Post?{
         didSet{
-            
+            //without this it crashes
+            loadViewIfNeeded()
             updateViews()
         }
     }
@@ -48,8 +52,9 @@ class PostDetailTableViewController: UITableViewController {
     
     //MARK: - Helper Methods
     func updateViews() {
-        guard let post = post else {return}
-        photoImageView.image = post.photo ?? UIImage(named: "slc")
+        guard let post = post,
+        let image = post.photo else {return}
+        photoImageView.image = image
         
         //FIXME: update Labels
         //FIXME: relod the table view if needed
@@ -72,9 +77,7 @@ class PostDetailTableViewController: UITableViewController {
             })
             
         }))
-        
-        
-        
+        self.present(alert, animated: true)
         
     }
     

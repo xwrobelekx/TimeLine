@@ -24,6 +24,7 @@ class PostController {
     //MARK: - CRUD Methods
     func addComment(text: String, post: Post, completion: (Comment) -> Void){
         
+        
         //This should return a Comment object in a completion closure
         
     }
