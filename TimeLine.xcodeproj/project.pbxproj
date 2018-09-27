@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3B397294215C31AB009FEA9C /* PhotoSelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B397293215C31AB009FEA9C /* PhotoSelectorViewController.swift */; };
+		3B397296215C7AB8009FEA9C /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B397295215C7AB8009FEA9C /* Comment.swift */; };
 		3BC26EE3215BC72E004606FD /* SearchableRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC26EE2215BC72E004606FD /* SearchableRecord.swift */; };
 		3BD77F78215ADD9700FC686E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD77F77215ADD9700FC686E /* AppDelegate.swift */; };
 		3BD77F7D215ADD9700FC686E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3BD77F7B215ADD9700FC686E /* Main.storyboard */; };
@@ -21,10 +22,12 @@
 		3BD77F9F215AF93B00FC686E /* PostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD77F9E215AF93B00FC686E /* PostTableViewCell.swift */; };
 		3BD77FA1215AF97300FC686E /* DateFormater.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD77FA0215AF97300FC686E /* DateFormater.swift */; };
 		3BD77FA5215B07C200FC686E /* PostDetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD77FA4215B07C200FC686E /* PostDetailTableViewController.swift */; };
+		3BD9864C215D5C36008AD461 /* Alerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD9864B215D5C36008AD461 /* Alerts.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		3B397293215C31AB009FEA9C /* PhotoSelectorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoSelectorViewController.swift; sourceTree = "<group>"; };
+		3B397295215C7AB8009FEA9C /* Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
 		3BC26EE2215BC72E004606FD /* SearchableRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchableRecord.swift; sourceTree = "<group>"; };
 		3BD77F74215ADD9700FC686E /* TimeLine.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TimeLine.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3BD77F77215ADD9700FC686E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -41,6 +44,7 @@
 		3BD77F9E215AF93B00FC686E /* PostTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostTableViewCell.swift; sourceTree = "<group>"; };
 		3BD77FA0215AF97300FC686E /* DateFormater.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormater.swift; sourceTree = "<group>"; };
 		3BD77FA4215B07C200FC686E /* PostDetailTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailTableViewController.swift; sourceTree = "<group>"; };
+		3BD9864B215D5C36008AD461 /* Alerts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alerts.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -137,6 +141,7 @@
 			isa = PBXGroup;
 			children = (
 				3BD77F9A215AE45E00FC686E /* Post.swift */,
+				3B397295215C7AB8009FEA9C /* Comment.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -146,6 +151,7 @@
 			children = (
 				3BD77FA0215AF97300FC686E /* DateFormater.swift */,
 				3BC26EE2215BC72E004606FD /* SearchableRecord.swift */,
+				3BD9864B215D5C36008AD461 /* Alerts.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -249,6 +255,8 @@
 				3B397294215C31AB009FEA9C /* PhotoSelectorViewController.swift in Sources */,
 				3BD77F99215AE29F00FC686E /* AddPostTableViewController.swift in Sources */,
 				3BD77F9B215AE45E00FC686E /* Post.swift in Sources */,
+				3B397296215C7AB8009FEA9C /* Comment.swift in Sources */,
+				3BD9864C215D5C36008AD461 /* Alerts.swift in Sources */,
 				3BD77F9D215AE8DA00FC686E /* PostController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

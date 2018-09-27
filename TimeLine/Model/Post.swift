@@ -8,15 +8,28 @@
 
 import Foundation
 import UIKit
+import CloudKit
+
 
 
 class Post: SearchableRecord {
     
-    var photoData: Data?
-    let timestamp: Date
-    let caption: String
-    let comments: [Comment] = []
+    //MARK: - CloidKit Keys
+    let RecordTypeKey = "Post"
+    fileprivate let TimestampKey = "Timestamp"
+    fileprivate let CaptionKey = "Caption"
+    fileprivate let PhotoKey = "Photo"
+
     
+    //MARK: - Properties
+    var photoData: Data?
+    var timestamp: Date
+    var caption: String
+    var comments: [Comment] = []
+    let recordID = CKRecord.ID(recordName: UUID().uuidString)
+    var tempURL: URL?
+    
+    //this creates image from PhotoData or updates PhotoData with new image
     var photo : UIImage? {
         get {
             guard let photo = photoData else {return nil}
@@ -28,42 +41,97 @@ class Post: SearchableRecord {
         }
     }
     
-    
-    init(photoData: Data?, timestamp: Date = Date(), caption: String, photo: UIImage?){
-        self.photoData = photoData
+    //MARK: - Designated Initializer
+    init(timestamp: Date = Date(), caption: String, photo : UIImage?, comments: [Comment] = []){
+        
+        //once the images is set - so is the PhotoData
+        
+        
         self.timestamp = timestamp
         self.caption = caption
+        self.comments = comments
         self.photo = photo
     }
     
+    
+    //this writes PhotoData into temporaty storage, and uses the storage URL to be turned into CKAsset.
+    var imageAsset: CKAsset? {
+        get {
+            let tempDirectory = NSTemporaryDirectory()
+            let tempDirectoryURL = URL(fileURLWithPath: tempDirectory)
+            let fileURL = tempDirectoryURL.appendingPathComponent(UUID().uuidString).appendingPathExtension("jpg")
+            self.tempURL = fileURL
+            print("😏 CKAsset temoprary url: \(tempURL)")
+            do {
+                try photoData?.write(to: fileURL)
+                
+            } catch let error {
+                print("Error writing to temp url: \(error), \(error.localizedDescription)")
+            }
+            return CKAsset(fileURL: fileURL)
+        }
+    }
+    
+    deinit {
+        if let url = tempURL {
+            do {
+                try FileManager.default.removeItem(at: url)
+            } catch let error {
+                print("Error deleting temp file, or may cause memory leak: \(error)")
+            }
+        }
+        
+    }
+    
+
+    
+//    //MARK: - Failable init
+//    convenience init?(ckRecord: CKRecord){
+//        guard let timestamp = ckRecord.creationDate,
+//            let caption = ckRecord[CaptionKey] as? String,
+//           let imageAsset = ckRecord[PhotoKey] as? CKAsset else {return nil}
+//
+//        guard let photoData = try? Data(contentsOf: imageAsset.fileURL) else {
+//            return nil
+//        }
+//
+//
+//        //FIXME:  check the photo init
+//        self.init(photoData: photoData, timestamp: timestamp, caption: caption, photo: nil)
+//        self.photoData = photoData
+//        self.timestamp = timestamp
+//        self.caption = caption
+//
+//    }
+
+
+
+    
+    //MARK: - Protocol Methods
     func matches(searchTerm: String) -> Bool {
         return caption.lowercased().contains(searchTerm.lowercased())
+   
+        //TODO: this only contains logic to search thru caption - later we need to add logic to search thru comments
     }
+    
+    
+    //MARK: - CloudKit
+    
+    
+    
+    
     
 }
 
 
-
-
-
-class Comment: SearchableRecord {
-    
-    //FIXME: what is the text property for?
-    let comment: String
-    let text: String
-    let timestamp: Date
-    
-    weak var post: Post?
-    
-    init(comment: String, text: String, timestamp: Date = Date()){
-        self.comment = comment
-        self.text = text
-        self.timestamp = timestamp
+extension CKRecord {
+    convenience init(post: Post){
+        let recordID = post.recordID
+        self.init(recordType: post.RecordTypeKey, recordID: recordID)
+        setValue(post.caption, forKey: post.CaptionKey)
+        setValue(post.timestamp, forKey: post.TimestampKey)
+        //not sure if i should use the photo or imageAssets
+//        setValue(post.photo, forKey: post.PhotoKey)
+        setValue(post.imageAsset, forKey: post.PhotoKey)
     }
-    
-    func matches(searchTerm: String) -> Bool{
-        return comment.lowercased().contains(searchTerm.lowercased()) //may need to add text to be searchable
-
-    }
-    
 }

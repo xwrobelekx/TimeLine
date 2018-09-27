@@ -30,6 +30,7 @@ class PostListTableViewController: UITableViewController, UISearchBarDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        resultsArray = PostController.shared.posts
         tableView.reloadData()
         
         //FIXME: Part 2 -> 5 - In ViewWillAppear set the results array equal to the PostController.shared.posts - not sure why i would do that?
@@ -77,7 +78,7 @@ class PostListTableViewController: UITableViewController, UISearchBarDelegate {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "postCell", for: indexPath) as? PostTableViewCell else {return UITableViewCell()}
         if isSearching {
-            let post  = resultsArray[indexPath.row] as? Post
+            let post  = resultsArray[indexPath.row]
             cell.post = post
         } else {
             let post = PostController.shared.posts[indexPath.row]
