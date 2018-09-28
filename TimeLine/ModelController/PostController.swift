@@ -30,6 +30,7 @@ class PostController {
     //MARK: - Properties
     let publicDB = CKContainer.default().publicCloudDatabase
     let postUpdatedWithNewValueNotification = Notification.Name("postUpdatedWithNewValue")
+    let commentUpdateWithNewValueNotification = Notification.Name("commentUpdateWithNewValue")
     
     
     

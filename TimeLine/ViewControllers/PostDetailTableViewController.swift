@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import UserNotifications
 
 //TODO: - for got to do this
 
@@ -48,14 +49,10 @@ class PostDetailTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         //FIXME: were supose to implement row height here, but tableView had automatic dimension by default
-        guard let post = post else {return}
-        PostController.shared.fetchCommentsFor(post: post) { (success) in
-            if success {
-            self.updateViews()
-            } else {
-                print("not sucessfull fetching comments")
-            }
-        }
+        NotificationCenter.default.addObserver(self, selector: #selector(updateViews), name: PostController.shared.commentUpdateWithNewValueNotification, object: nil)
+        
+        updateViews()
+       
         
     }
     
@@ -107,17 +104,25 @@ class PostDetailTableViewController: UITableViewController {
     
     
     //MARK: - Helper Methods
-    func updateViews() {
-        guard let post = post,
-        let image = post.photo else {return}
+    @objc func updateViews() {
+        guard let post = post else {return}
+        PostController.shared.fetchCommentsFor(post: post) { (success) in
+            if success {
+                self.updateViews()
+            } else {
+                print("not sucessfull fetching comments")
+            }
+        }
+        
+       
+       guard let image = post.photo else {return}
         
         DispatchQueue.main.async {
             self.photoImageView.image = image
             self.tableView.reloadData()
-            
-            
             //FIXME: update Labels
-            //FIXME: relod the table view if needed
+        //FIXME: relod the table view if needed
+            
             
         }
         

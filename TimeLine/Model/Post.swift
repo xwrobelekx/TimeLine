@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import CloudKit
+import UserNotifications
 
 
 
@@ -18,7 +19,10 @@ class Post: SearchableRecord {
     var photoData: Data?
     var timestamp: Date
     var caption: String
-    var comments: [Comment] = []
+    var comments: [Comment] = []{
+        didSet {
+            NotificationCenter.default.post(name: PostController.shared.commentUpdateWithNewValueNotification, object: nil)        }
+    }
     let recordID = CKRecord.ID(recordName: UUID().uuidString)
     var tempURL: URL?
     
