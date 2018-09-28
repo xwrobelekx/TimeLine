@@ -35,16 +35,26 @@ class PostController {
     
     
     //MARK: - CRUD Methods
-    func addComment(text: String, post: Post, completion: (Comment) -> Void){
-        
-        
+    func addComment(text: String, post: Post, completion: @escaping (Comment) -> Void){
         let comment = Comment(text: text, post: post)
         
         //This should return a Comment object in a completion closure
         //For now this function will only initialize a new comment and append it to the given post's comments array.
-        post.comments.append(comment)
+       
         let record = CKRecord(comment: comment)
         
+        //FIXME: - need to save the comment
+        publicDB.save(record) { (record, error) in
+            if let error = error {
+                print("There was an error saving comment to icloud on \(#function): \(error) \(error.localizedDescription)")
+                return
+            }
+            guard let record = record else {return}
+            guard let comment = Comment(ckRecord: record) else {return}
+            
+             post.comments.append(comment)
+            completion(comment)
+        }
         
         
     }
@@ -87,7 +97,7 @@ class PostController {
         
             publicDB.perform(query, inZoneWith: nil, completionHandler: { (records, error) in
                 if let error = error {
-                    print("There was an error fetching from iCloud on \(#function): \(error) \(error.localizedDescription)")
+                    print("😵There was an error fetching posts from iCloud on \(#function): \(error) \(error.localizedDescription)")
                     completion([])
                     return
                 }
@@ -99,6 +109,32 @@ class PostController {
                 completion(posts)
                 
             })
+        
+    }
+    
+    
+    
+    //MARK: - Fetch Comments
+    
+    func fetchCommentsFor(post: Post, completion: @escaping(Bool)->Void ) {
+        
+        let predicate = NSPredicate(value: true)
+        
+        let query = CKQuery(recordType: CommentConstants.CommentTypeKey, predicate: predicate)
+        
+        publicDB.perform(query, inZoneWith: nil) { (comments, error) in
+            if let error = error {
+                print("😱There was an error fetching comments on \(#function): \(error) \(error.localizedDescription)")
+                completion(false)
+                return
+            }
+            guard let comments = comments else { completion(false); return }
+            
+            let allComments = comments.compactMap{ Comment(ckRecord: $0) }
+            post.comments = allComments
+            completion(true)
+        }
+        
         
     }
     
@@ -132,8 +168,6 @@ class PostController {
                 completion(false)
                 
             }
-            
-            
         }
     }
     

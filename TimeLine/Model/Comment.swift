@@ -12,10 +12,7 @@ import CloudKit
 
 class Comment: SearchableRecord {
     
-    let CommentTypeKey = "CommentType"
-    fileprivate let PostKeyReference = "PostReference"
-    fileprivate let TextKey = "TextKey"
-    fileprivate let CommentTimestampKey = "CommentTimestamp"
+
     
     //FIXME: what is the text property for?
     
@@ -33,23 +30,21 @@ class Comment: SearchableRecord {
     
 
     
+    //not sure if this is right
+    //need failable init to turn ckrecord back to model
+    convenience init?(ckRecord: CKRecord){
+        //unwrap all the values, and cast them to correct type
+        guard let text = ckRecord[CommentConstants.TextKey] as? String,
+            let timestamp = ckRecord.creationDate else {return nil}
+        self.init(text: text, timestamp: timestamp, post: nil)
+    }
     
-//    //need failable init to turn ckrecord back to model
-//    convenience init?(ckRecord: CKRecord){
-//        //unwrap all the values, and cast them to correct type
-//        guard let comment = ckRecord[CommentKey] as? String,
-//        let text = ckRecord[TextKey] as? String,
-//            let timestamp = ckRecord.creationDate else {return nil}
-//        
-//        self.init(comment: comment, text: text, timestamp: timestamp)
-//    }
+    
     
     
     func matches(searchTerm: String) -> Bool{
         return text.lowercased().contains(searchTerm.lowercased())
     }
-    
-    
 }
 
 
@@ -59,17 +54,21 @@ extension CKRecord {
         guard let post = comment.post else {
             fatalError("Comment does not have a Post relationship")
         }
-        self.init(recordType: comment.CommentTypeKey, recordID: comment.recordId)
-        setValue(comment.text, forKey: comment.TextKey)
-        setValue(comment.timestamp, forKey: comment.CommentTimestampKey)
-        setValue(CKRecord.Reference(recordID: post.recordID, action: .deleteSelf), forKey: comment.PostKeyReference)
+        self.init(recordType: CommentConstants.CommentTypeKey, recordID: comment.recordId)
+        setValue(comment.text, forKey: CommentConstants.TextKey)
+        setValue(comment.timestamp, forKey: CommentConstants.CommentTimestampKey)
+        setValue(CKRecord.Reference(recordID: post.recordID, action: .deleteSelf), forKey: CommentConstants.PostKeyReference)
     }
-    
-    
 }
 
 
 
+struct CommentConstants {
+    static let CommentTypeKey = "CommentType"
+    static let PostKeyReference = "PostReference"
+    static let TextKey = "TextKey"
+    static let CommentTimestampKey = "CommentTimestamp"
+}
 
 
 

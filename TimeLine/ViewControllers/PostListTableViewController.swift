@@ -32,6 +32,9 @@ class PostListTableViewController: UITableViewController, UISearchBarDelegate {
         
         PostController.shared.fetchRecordsFromiCloud { (posts) in
             
+            guard let posts = posts else {return}
+            //assigned fetched post to local array in post controller
+            PostController.shared.posts = posts
         }
 
     }
@@ -41,6 +44,7 @@ class PostListTableViewController: UITableViewController, UISearchBarDelegate {
         resultsArray = PostController.shared.posts
         tableView.reloadData()
         
+        resultsArray = PostController.shared.posts
         //FIXME: Part 2 -> 5 - In ViewWillAppear set the results array equal to the PostController.shared.posts - not sure why i would do that?
     }
     

@@ -47,8 +47,42 @@ class PostDetailTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         //FIXME: were supose to implement row height here, but tableView had automatic dimension by default
-       
+        guard let post = post else {return}
+        PostController.shared.fetchCommentsFor(post: post) { (success) in
+            self.updateViews()
+        }
+        
     }
+    
+    
+    
+    
+    //MARK: - TableView Data Source
+    
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        guard let post = post else {return 0}
+        return post.comments.count
+    }
+    
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "commentCell", for: indexPath)
+        guard let post = post else {return cell}
+        let comment = post.comments[indexPath.row]
+        cell.textLabel?.text = comment.text
+        cell.detailTextLabel?.text = comment.timestamp.dateAsString()
+        return cell
+        
+    }
+    
+    
+    
+    
+    
+    
+    
+    
 
     
     
@@ -71,10 +105,16 @@ class PostDetailTableViewController: UITableViewController {
     func updateViews() {
         guard let post = post,
         let image = post.photo else {return}
-        photoImageView.image = image
         
-        //FIXME: update Labels
-        //FIXME: relod the table view if needed
+        DispatchQueue.main.async {
+            self.photoImageView.image = image
+            
+            
+            //FIXME: update Labels
+            //FIXME: relod the table view if needed
+            
+        }
+        
     }
     
     
@@ -91,8 +131,14 @@ class PostDetailTableViewController: UITableViewController {
            guard let commentTextField = alert.textFields?.first,
             let comment = commentTextField.text, comment != "" else {return}
             guard let post = self.post else {return}
-            PostController.shared.addComment(text: comment, post: post , completion: { (xxxx) in
-                //FIXME: completion may be needed
+            PostController.shared.addComment(text: comment, post: post , completion: { (comment) in
+                DispatchQueue.main.async {
+                    
+                    //FIXME: this didnt help - but i think its because the coments are not saving
+                    self.tableView.reloadData()
+                }
+                
+                
             })
             
         }))
