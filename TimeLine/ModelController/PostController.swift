@@ -118,9 +118,15 @@ class PostController {
     
     func fetchCommentsFor(post: Post, completion: @escaping(Bool)->Void ) {
         
-        let predicate = NSPredicate(value: true)
+        //FIXME: - i knew i had a problem here - i just copied and pasted the code form read me
+        let postRefence = post.recordID
+        let predicate = NSPredicate(format: "%K == %@", CommentConstants.PostKeyReference, postRefence)
+//        let commentIDs = post.comments.compactMap({$0.recordId})
+//        let predicate2 = NSPredicate(format: "NOT(recordID IN %@)", commentIDs)
+        let compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate])
+    
         
-        let query = CKQuery(recordType: CommentConstants.CommentTypeKey, predicate: predicate)
+        let query = CKQuery(recordType: CommentConstants.CommentTypeKey, predicate: compoundPredicate)
         
         publicDB.perform(query, inZoneWith: nil) { (comments, error) in
             if let error = error {
@@ -190,52 +196,3 @@ class PostController {
 }
 
 
-
-
-
-
-
-
-
-
-// i statted with this to check if user is signed in to the icloud
-
-
-//    ///checks if the user is signed in to iCloud Account
-//    func isUserSignedIn(completion: @escaping(Bool) -> Void){
-//
-//        // this fetches Record ID associated with the curent user - if we cant get that that meant the user dont exist - or is not signed in?
-//        CKContainer.default().fetchUserRecordID { (appleUserRecordId, error) in
-//            if let error = error {
-//                print("🤬🤬 There was an error fetching user Record ID on \(#function): \(error) \(error.localizedDescription)")
-//                completion(false)
-//                return
-//            }
-//            guard let appleUserRecordID = appleUserRecordId else {completion(false); return}
-//            //this creates a reference many to one between user and records in database - not sure what the "deleteSelf" action is for
-//            let appleUserReference = CKRecord.Reference(recordID: appleUserRecordID, action: .deleteSelf)
-//
-//            //this predicate compers the key that we have with the keys in the database
-//            let predicate = NSPredicate(format: "%K == %@", "Post", appleUserReference)
-//
-//            let querry = CKQuery(recordType: "Post", predicate: predicate)
-//            //now that we have a reference to the user we want to...
-//            CKContainer.default().publicCloudDatabase.perform(querry, inZoneWith: nil, completionHandler: { (records, error) in
-//                if let error = error {
-//                    print("👿👿 There was an error comparing UserReference Keys on \(#function): \(error) \(error.localizedDescription)")
-//                    completion(false)
-//                    Alerts.presentCustomAlert(title: "Error", message: "unable to find your account - please check your email adress.")
-//                    return
-//                }
-//
-//                //now we have array of records - technically there should be one record there - we need to extract it
-//                guard let record = records?.first else { completion(false); return}
-//
-//                // not sure what to do with this now
-//                //should i create a User Model to track users?
-//                //or should we just hardcode it to always log in the same user
-//
-//                completion(true)
-//            })
-//        }
-//    }

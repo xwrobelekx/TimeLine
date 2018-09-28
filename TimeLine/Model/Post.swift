@@ -122,7 +122,7 @@ extension CKRecord {
 
 
 
-//MARK: - CloidKit Keys
+//MARK: - CloudKit Keys
 struct Constants {
     static let RecordTypeKey = "Post"
     static let TimestampKey = "Timestamp"

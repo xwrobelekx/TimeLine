@@ -12,7 +12,6 @@ import CloudKit
 
 class Comment: SearchableRecord {
     
-
     
     //FIXME: what is the text property for?
     
@@ -30,16 +29,12 @@ class Comment: SearchableRecord {
     
 
     
-    //not sure if this is right
     //need failable init to turn ckrecord back to model
     convenience init?(ckRecord: CKRecord){
-        //unwrap all the values, and cast them to correct type
         guard let text = ckRecord[CommentConstants.TextKey] as? String,
             let timestamp = ckRecord.creationDate else {return nil}
         self.init(text: text, timestamp: timestamp, post: nil)
     }
-    
-    
     
     
     func matches(searchTerm: String) -> Bool{

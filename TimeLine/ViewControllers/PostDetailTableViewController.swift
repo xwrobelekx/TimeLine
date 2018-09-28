@@ -23,7 +23,8 @@ import UIKit
  
 */
 
-
+//its not loading comments when i first load the detail view
+//when i ad comment it loads all the comments - on any image
 
 class PostDetailTableViewController: UITableViewController {
     
@@ -49,7 +50,11 @@ class PostDetailTableViewController: UITableViewController {
         //FIXME: were supose to implement row height here, but tableView had automatic dimension by default
         guard let post = post else {return}
         PostController.shared.fetchCommentsFor(post: post) { (success) in
+            if success {
             self.updateViews()
+            } else {
+                print("not sucessfull fetching comments")
+            }
         }
         
     }
@@ -108,6 +113,7 @@ class PostDetailTableViewController: UITableViewController {
         
         DispatchQueue.main.async {
             self.photoImageView.image = image
+            self.tableView.reloadData()
             
             
             //FIXME: update Labels
@@ -133,19 +139,10 @@ class PostDetailTableViewController: UITableViewController {
             guard let post = self.post else {return}
             PostController.shared.addComment(text: comment, post: post , completion: { (comment) in
                 DispatchQueue.main.async {
-                    
-                    //FIXME: this didnt help - but i think its because the coments are not saving
                     self.tableView.reloadData()
                 }
-                
-                
             })
-            
         }))
         self.present(alert, animated: true)
-        
     }
-    
-    
-    
 }
