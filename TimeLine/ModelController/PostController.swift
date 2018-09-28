@@ -19,7 +19,6 @@ class PostController {
     private init() {}
     
     
-    let postUpdatedWithNewValueNotification = Notification.Name("postUpdatedWithNewValue")
     
     //MARK: Source Of Truth
     var posts: [Post] = []{
@@ -30,6 +29,7 @@ class PostController {
     
     //MARK: - Properties
     let publicDB = CKContainer.default().publicCloudDatabase
+    let postUpdatedWithNewValueNotification = Notification.Name("postUpdatedWithNewValue")
     
     
     
@@ -43,7 +43,6 @@ class PostController {
         //This should return a Comment object in a completion closure
         //For now this function will only initialize a new comment and append it to the given post's comments array.
         post.comments.append(comment)
-        
         let record = CKRecord(comment: comment)
         
         
@@ -51,7 +50,6 @@ class PostController {
     }
     
     func createPostWith(image: UIImage?, caption: String, completion: (Post) -> Void){
-        //The func will need to initalize a post from the image parameter and new comment and append the post to the posts array
         guard let image = image else {return}
         
         let post = Post(caption: caption, photo: image)
@@ -59,7 +57,6 @@ class PostController {
         saveToiCloud(ckRecord: record) { (success) in
             if success {
                 self.posts.append(post)
-                //FIXME: when creating new post the tableView in "PostList" is not reloading to display it
             }
         }
     }
@@ -82,11 +79,11 @@ class PostController {
     
     
     //MARK: - Fetch from iCloud
-    func fetchRecordsFromiCloud(recordId: CKRecord.ID, completion: @escaping ([Post]?) -> Void) {
+    func fetchRecordsFromiCloud(completion: @escaping ([Post]?) -> Void) {
         
         let predicate = NSPredicate(value: true)
         
-        let query = CKQuery(recordType: "Post", predicate: predicate)
+        let query = CKQuery(recordType: Constants.RecordTypeKey, predicate: predicate)
         
             publicDB.perform(query, inZoneWith: nil, completionHandler: { (records, error) in
                 if let error = error {
@@ -100,7 +97,6 @@ class PostController {
                 let posts = records.compactMap{Post(ckRecord: $0)}
                 self.posts = posts
                 completion(posts)
-                
                 
             })
         

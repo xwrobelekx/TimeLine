@@ -30,6 +30,9 @@ class PostListTableViewController: UITableViewController, UISearchBarDelegate {
         
         NotificationCenter.default.addObserver(self, selector: #selector(reloadTableView), name: PostController.shared.postUpdatedWithNewValueNotification, object: nil)
         
+        PostController.shared.fetchRecordsFromiCloud { (posts) in
+            
+        }
 
     }
     
