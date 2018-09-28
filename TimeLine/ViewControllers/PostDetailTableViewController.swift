@@ -8,6 +8,23 @@
 
 import UIKit
 
+//TODO: - for got to do this
+
+/*
+ 
+ 
+ Post Detail View Controller Share Sheet
+ 
+ Use the UIActivityController class to present a share sheet from the Post Detail view. Share the image and the text of the first comment.
+ 
+ Add an IBAction from the Share button in your PostDetailTableViewController if you have not already.
+ Initialize a UIActivityViewController with the Post's image and the text of the first comment as the shareable objects.
+ Present the UIActivityViewController.
+ 
+*/
+
+
+
 class PostDetailTableViewController: UITableViewController {
     
     //MARK: - Properties

@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import UserNotifications
+
 
 class PostListTableViewController: UITableViewController, UISearchBarDelegate {
     
@@ -25,6 +27,9 @@ class PostListTableViewController: UITableViewController, UISearchBarDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         postSearchBar.delegate = self
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadTableView), name: PostController.shared.postUpdatedWithNewValueNotification, object: nil)
+        
 
     }
     
@@ -138,6 +143,14 @@ class PostListTableViewController: UITableViewController, UISearchBarDelegate {
         }
         
     }
+    
+    //MARK: - Helper Method
+    @objc func reloadTableView(){
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
+    }
+    
     
     
 }

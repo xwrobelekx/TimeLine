@@ -56,12 +56,13 @@ class Comment: SearchableRecord {
 extension CKRecord {
     // this turns my model into CKRecord which now can be saved in iCloud
     convenience init(comment: Comment){
-        
-        let recordID = comment.recordId
-        self.init(recordType: comment.CommentTypeKey, recordID: recordID)
-        setValue(comment.post, forKey: comment.PostKeyReference)
+        guard let post = comment.post else {
+            fatalError("Comment does not have a Post relationship")
+        }
+        self.init(recordType: comment.CommentTypeKey, recordID: comment.recordId)
         setValue(comment.text, forKey: comment.TextKey)
         setValue(comment.timestamp, forKey: comment.CommentTimestampKey)
+        setValue(CKRecord.Reference(recordID: post.recordID, action: .deleteSelf), forKey: comment.PostKeyReference)
     }
     
     

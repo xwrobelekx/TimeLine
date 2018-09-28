@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import CloudKit
+import UserNotifications
 
 
 class PostController {
@@ -18,9 +19,14 @@ class PostController {
     private init() {}
     
     
-    //MARK: Source Of Truth
-    var posts: [Post] = []
+    let postUpdatedWithNewValueNotification = Notification.Name("postUpdatedWithNewValue")
     
+    //MARK: Source Of Truth
+    var posts: [Post] = []{
+        didSet {
+            NotificationCenter.default.post(name: postUpdatedWithNewValueNotification, object: nil)
+        }
+    }
     
     //MARK: - Properties
     let publicDB = CKContainer.default().publicCloudDatabase
@@ -37,6 +43,10 @@ class PostController {
         //This should return a Comment object in a completion closure
         //For now this function will only initialize a new comment and append it to the given post's comments array.
         post.comments.append(comment)
+        
+        let record = CKRecord(comment: comment)
+        
+        
         
     }
     
@@ -72,9 +82,27 @@ class PostController {
     
     
     //MARK: - Fetch from iCloud
-    func fetchRecordsFromiCloud(recordId: CKRecord.ID, completion: @escaping (Bool) -> Void) {
+    func fetchRecordsFromiCloud(recordId: CKRecord.ID, completion: @escaping ([Post]?) -> Void) {
         
+        let predicate = NSPredicate(value: true)
         
+        let query = CKQuery(recordType: "Post", predicate: predicate)
+        
+            publicDB.perform(query, inZoneWith: nil, completionHandler: { (records, error) in
+                if let error = error {
+                    print("There was an error fetching from iCloud on \(#function): \(error) \(error.localizedDescription)")
+                    completion([])
+                    return
+                }
+                
+                guard let records = records else { completion([]); return}
+                
+                let posts = records.compactMap{Post(ckRecord: $0)}
+                self.posts = posts
+                completion(posts)
+                
+                
+            })
         
     }
     
