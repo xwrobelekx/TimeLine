@@ -14,14 +14,10 @@
  
  */
 
-
-
-
 import UIKit
 
 
-class AddPostTableViewController: UITableViewController, ImagePickerCustomDelegate  {
-    
+class AddPostTableViewController: UITableViewController, ImagePickerCustomDelegate, UITextFieldDelegate  {
     
     
     //MARK: - Properties
@@ -35,6 +31,7 @@ class AddPostTableViewController: UITableViewController, ImagePickerCustomDelega
     //MARK: - Lifecycle Methods
     override func viewDidLoad() {
         super.viewDidLoad()
+        addCaptionTextField.delegate = self
     }
     
     
@@ -54,7 +51,8 @@ class AddPostTableViewController: UITableViewController, ImagePickerCustomDelega
     
     
     //MARK: - Actions
-    @IBAction func addPostButtonTapped(_ sender: Any) {
+    @IBAction func textFieldShouldReturn(_ sender: UITextField) {
+        
         guard let image = image,
             let caption = addCaptionTextField.text,
             caption != "" else {return}
@@ -63,10 +61,10 @@ class AddPostTableViewController: UITableViewController, ImagePickerCustomDelega
             //FIXME: need to do something here for completion
         }
         addCaptionTextField.text = ""
+        
         //FIXME: - would be nice to animate this
         self.tabBarController?.selectedIndex = 0
     }
-    
     
     @IBAction func cancelButtonTapped(_ sender: Any) {
         addCaptionTextField.text = ""

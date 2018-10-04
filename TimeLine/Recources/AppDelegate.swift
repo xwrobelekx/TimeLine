@@ -16,12 +16,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        //register for remote notifications
         
         PostController.shared.accountStatus { (success) in
             
         }
         return true
     }
+    
+    //this will be called an well subscribe to the post subscription when user grans ur permition
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        //trigger notifications
+        
+        
+//        PostController.shared.subscribeToNewPosts { (success, error) in
+//            if let error = error {
+//                print("There was an error on \(#function): \(error) \(error.localizedDescription)")
+//                return
+//            }
+//            //not sure what to do is succesfull
+//        }
+    }
+    
+    
+    
 
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

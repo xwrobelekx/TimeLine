@@ -12,13 +12,9 @@ import CloudKit
 
 class Comment: SearchableRecord {
     
-    
-    //FIXME: what is the text property for?
-    
-    let text: String
-    let timestamp: Date
-    let recordId = CKRecord.ID(recordName: UUID().uuidString)
-    
+    var text: String
+    var timestamp: Date
+    var recordId = CKRecord.ID(recordName: UUID().uuidString)
     weak var post: Post?
     
     init(text: String, timestamp: Date = Date(), post: Post?){
@@ -27,13 +23,13 @@ class Comment: SearchableRecord {
         self.post = post
     }
     
-
     
     //need failable init to turn ckrecord back to model
     convenience init?(ckRecord: CKRecord){
         guard let text = ckRecord[CommentConstants.TextKey] as? String,
             let timestamp = ckRecord.creationDate else {return nil}
         self.init(text: text, timestamp: timestamp, post: nil)
+        self.recordId = ckRecord.recordID
     }
     
     
@@ -57,9 +53,9 @@ extension CKRecord {
 }
 
 
-
 struct CommentConstants {
-    static let CommentTypeKey = "CommentType"
+    //changed comment key
+    static let CommentTypeKey = "Comment"
     static let PostKeyReference = "PostReference"
     static let TextKey = "TextKey"
     static let CommentTimestampKey = "CommentTimestamp"

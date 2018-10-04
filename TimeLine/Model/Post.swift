@@ -6,7 +6,7 @@
 //  Copyright © 2018 Kamil Wrobel. All rights reserved.
 //
 
-import Foundation
+
 import UIKit
 import CloudKit
 import UserNotifications
@@ -19,11 +19,8 @@ class Post: SearchableRecord {
     var photoData: Data?
     var timestamp: Date
     var caption: String
-    var comments: [Comment] = []{
-        didSet {
-            NotificationCenter.default.post(name: PostController.shared.commentUpdateWithNewValueNotification, object: nil)        }
-    }
-    let recordID = CKRecord.ID(recordName: UUID().uuidString)
+    var comments: [Comment] = []
+    var recordID = CKRecord.ID(recordName: UUID().uuidString)
     var tempURL: URL?
     
     //this creates image from PhotoData or updates PhotoData with new image
@@ -34,7 +31,7 @@ class Post: SearchableRecord {
         }
         set(newPhoto){
             //updates photoData with new image Data
-         photoData = newPhoto?.jpegData(compressionQuality: 0.6)
+            photoData = newPhoto?.jpegData(compressionQuality: 0.6)
         }
     }
     
@@ -46,6 +43,7 @@ class Post: SearchableRecord {
         self.caption = caption
         self.comments = comments
         self.photo = photo
+        
     }
     
     
@@ -75,38 +73,30 @@ class Post: SearchableRecord {
                 print("Error deleting temp file, or may cause memory leak: \(error)")
             }
         }
-        
     }
     
-
     
     //MARK: - Failable init
     convenience init?(ckRecord: CKRecord){
         guard let timestamp = ckRecord.creationDate,
             let caption = ckRecord[Constants.CaptionKey] as? String,
-           let imageAsset = ckRecord[Constants.PhotoKey] as? CKAsset else {return nil}
-
+            let imageAsset = ckRecord[Constants.PhotoKey] as? CKAsset else {return nil}
+        
         guard let photoData = try? Data(contentsOf: imageAsset.fileURL) else {
             return nil
         }
         
-
-
-        //FIXME:  check the photo init
         self.init(timestamp: timestamp, caption: caption, photo: nil)
         self.photoData = photoData
         self.timestamp = timestamp
         self.caption = caption
-
+        self.recordID = ckRecord.recordID
     }
-
-
-
+    
     
     //MARK: - Protocol Methods
     func matches(searchTerm: String) -> Bool {
         return caption.lowercased().contains(searchTerm.lowercased())
-   
         //TODO: this only contains logic to search thru caption - later we need to add logic to search thru comments
     }
 }
@@ -123,7 +113,6 @@ extension CKRecord {
         setValue(post.imageAsset, forKey: Constants.PhotoKey)
     }
 }
-
 
 
 //MARK: - CloudKit Keys

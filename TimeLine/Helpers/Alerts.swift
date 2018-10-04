@@ -11,9 +11,7 @@ import UIKit
 
 extension UIViewController {
     
-    ///alert with OK action that dismisse the alert - no completion
     func presentCustomAlert(title: String, message: String?) {
-       
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: { (_) in
         }))
@@ -21,21 +19,10 @@ extension UIViewController {
         
     }
     
-    
      func presentErrorAlert(errorTitle: String, errorMessage: String) {
-       
         let alert = UIAlertController(title: errorTitle, message: errorMessage, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: { (_) in
         }))
-            
-        
-            
         present(alert, animated: true)
-        
-
         }
-        
-        
-    
-    
 }

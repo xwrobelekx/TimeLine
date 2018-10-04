@@ -9,28 +9,11 @@
 import UIKit
 import UserNotifications
 
-//TODO: - for got to do this
-
-/*
- 
- 
- Post Detail View Controller Share Sheet
- 
- Use the UIActivityController class to present a share sheet from the Post Detail view. Share the image and the text of the first comment.
- 
- Add an IBAction from the Share button in your PostDetailTableViewController if you have not already.
- Initialize a UIActivityViewController with the Post's image and the text of the first comment as the shareable objects.
- Present the UIActivityViewController.
- 
-*/
-
-//its not loading comments when i first load the detail view
-//when i ad comment it loads all the comments - on any image
 
 class PostDetailTableViewController: UITableViewController {
     
     //MARK: - Properties
-    
+    @IBOutlet weak var folllowButtonOutlet: UIButton!
     
     
     var post : Post?{
@@ -42,26 +25,16 @@ class PostDetailTableViewController: UITableViewController {
     }
     
     //MARK: - Outlets
-    
     @IBOutlet weak var photoImageView: UIImageView!
     
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         //FIXME: were supose to implement row height here, but tableView had automatic dimension by default
-        NotificationCenter.default.addObserver(self, selector: #selector(updateViews), name: PostController.shared.commentUpdateWithNewValueNotification, object: nil)
-        
         updateViews()
-       
-        
     }
     
-    
-    
-    
     //MARK: - TableView Data Source
-    
-    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let post = post else {return 0}
         return post.comments.count
@@ -78,27 +51,34 @@ class PostDetailTableViewController: UITableViewController {
         
     }
     
-    
-    
-    
-    
-    
-    
-    
-
-    
-    
     //MARK: - Actions
     
     @IBAction func commentButtonTapped(_ sender: Any) {
-        //UIAlertController with textField - cancel & ok - ok actions inits new comment via PostController - reloads tableView to display it - do not create new comment if user did add any text
         addComentAlert()
     }
     
     @IBAction func followButtonTapped(_ sender: Any) {
+        guard let post = post else {return}
+        PostController.shared.toggleSubscrioptionTo(commentsForPost: post) { (success, error) in
+            if let error = error {
+                print("There was an error toggling funcion when folow Button WasTapped on \(#function): \(error) \(error.localizedDescription)")
+                return
+            }
+            if success {
+                DispatchQueue.main.async {
+                    print("succesfully toggled function when folow button was toggled")
+                    // self.folllowButtonOutlet.setTitle("Unfollow", for: .normal)
+                    self.updateViews()
+                }
+            }
+        }
     }
     
     @IBAction func shareButtonTapped(_ sender: Any) {
+        guard let post = post else {return}
+        guard let image = post.photo else {return}
+        let shareSheet = UIActivityViewController(activityItems: [image], applicationActivities: nil)
+        present(shareSheet, animated: true, completion: nil)
     }
     
     
@@ -106,28 +86,20 @@ class PostDetailTableViewController: UITableViewController {
     //MARK: - Helper Methods
     @objc func updateViews() {
         guard let post = post else {return}
-        PostController.shared.fetchCommentsFor(post: post) { (success) in
-            if success {
-                self.updateViews()
-            } else {
-                print("not sucessfull fetching comments")
+        PostController.shared.checkSubscription(to: post) { (isSubscribed) in
+            DispatchQueue.main.async {
+                let buttonTitle = isSubscribed ? "Unfollow" : "Follow"
+                self.folllowButtonOutlet.setTitle(buttonTitle, for: .normal)
             }
         }
-        
-       
-       guard let image = post.photo else {return}
-        
+        guard let image = post.photo else {return}
         DispatchQueue.main.async {
             self.photoImageView.image = image
             self.tableView.reloadData()
             //FIXME: update Labels
-        //FIXME: relod the table view if needed
-            
-            
+            //FIXME: relod the table view if needed
         }
-        
     }
-    
     
     
     func addComentAlert() {
@@ -135,12 +107,10 @@ class PostDetailTableViewController: UITableViewController {
         alert.addTextField { (commentTextField) in
             commentTextField.placeholder = "Enter coment here..."
         }
-        
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (commentCreated) in
-            
-           guard let commentTextField = alert.textFields?.first,
-            let comment = commentTextField.text, comment != "" else {return}
+            guard let commentTextField = alert.textFields?.first,
+                let comment = commentTextField.text, comment != "" else {return}
             guard let post = self.post else {return}
             PostController.shared.addComment(text: comment, post: post , completion: { (comment) in
                 DispatchQueue.main.async {

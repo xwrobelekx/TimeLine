@@ -16,12 +16,12 @@ protocol ImagePickerCustomDelegate: class {
 
 class PhotoSelectorViewController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
     
-
+    
     //MARK: - Outlets
     @IBOutlet weak var selectedImageView: UIImageView!
     @IBOutlet weak var selectImageButtonOutlet: UIButton!
     
-
+    
     //MARK: - Properties
     let imagePicker = UIImagePickerController()
     weak var delegate : ImagePickerCustomDelegate?

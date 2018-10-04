@@ -12,7 +12,6 @@ import UserNotifications
 
 class PostListTableViewController: UITableViewController, UISearchBarDelegate {
     
-    
     //MARK: - Properties
     var resultsArray: [Post] = []
     var isSearching : Bool = false
@@ -21,22 +20,18 @@ class PostListTableViewController: UITableViewController, UISearchBarDelegate {
     //MARK: - Outlets
     @IBOutlet weak var postSearchBar: UISearchBar!
     
-    
-    
     //MARK: - LifeCycle Methods
     override func viewDidLoad() {
         super.viewDidLoad()
         postSearchBar.delegate = self
+        tableView.keyboardDismissMode = .onDrag
         
-        NotificationCenter.default.addObserver(self, selector: #selector(reloadTableView), name: PostController.shared.postUpdatedWithNewValueNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadTableView), name: PostController.postUpdatedWithNewValueNotification, object: nil)
         
         PostController.shared.fetchRecordsFromiCloud { (posts) in
-            
             guard let posts = posts else {return}
-            //assigned fetched post to local array in post controller
             PostController.shared.posts = posts
         }
-
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -74,8 +69,6 @@ class PostListTableViewController: UITableViewController, UISearchBarDelegate {
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
         isSearching = false
     }
-
-    
     
     // MARK: - Table view data source
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -99,49 +92,9 @@ class PostListTableViewController: UITableViewController, UISearchBarDelegate {
         return cell
     }
     
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-  
-     
-     
-    
     
     // MARK: - Navigation
-        override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "toDetailViewSegue" {
             let destinationVC = segue.destination as? PostDetailTableViewController
             guard let indexPath = tableView.indexPathForSelectedRow else {return}
@@ -157,15 +110,7 @@ class PostListTableViewController: UITableViewController, UISearchBarDelegate {
             self.tableView.reloadData()
         }
     }
-    
-    
-    
 }
-
-
-
-
-
 
 extension PostListTableViewController: SearchableRecord {
     func matches(searchTerm: String) -> Bool {

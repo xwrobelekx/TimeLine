@@ -10,6 +10,7 @@ import UIKit
 
 class PostTableViewCell: UITableViewCell {
     
+    
     //MARK: - Properties
     var post: Post?{
         didSet{
@@ -24,31 +25,20 @@ class PostTableViewCell: UITableViewCell {
     @IBOutlet weak var postImageView: UIImageView!
     
     
-    //MARK: - LifeCycle Methods
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
-    
-    
-    
     //MARK: - Helper Methods
     func updateViews() {
         guard let post = post else {
             print("❗️No post to update cell in PostTableViewCell - updateViews function")
             return
         }
+        PostController.shared.fetchCommentsFor(post: post) { (success) in
+            if success {
+                DispatchQueue.main.async {
+                    self.commentCountLabel.text = "\(post.comments.count) comments"
+                }
+            }
+        }
         captionLabel.text = post.caption
-        commentCountLabel.text = String(post.comments.count)
         postImageView.image = post.photo ?? UIImage(named: "slc")
-        
     }
-    
-
 }
